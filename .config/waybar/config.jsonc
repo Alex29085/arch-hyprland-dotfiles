@@ -1,0 +1,42 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "spacing": 6,
+  "modules-left": [
+    "cpu",
+    "memory"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "battery",
+    "custom/power"
+  ],
+  "cpu": {
+    "format": "CPU {usage}%",
+    "interval": 2
+  },
+  "memory": {
+    "format": "RAM {}%",
+    "interval": 3
+  },
+  "clock": {
+    "format": "{:%H:%M  %d.%m.%Y}"
+  },
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "MUTE",
+    "on-click": "pavucontrol"
+  },
+  "battery": {
+    "format": "BAT {capacity}%",
+    "format-charging": "CHG {capacity}%"
+  },
+  "custom/power": {
+    "format": " ⏻ ",
+    "on-click": "wlogout"
+  }
+}

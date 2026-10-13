@@ -1,0 +1,21 @@
+**/.git/
+**/cache/
+**/Cache/
+**/__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+*.log
+*.swp
+*.swo
+.DS_Store
+
+# Local state and personal data
+.config/quickshell/state/
+.config/quickshell/imgs/pfp3.png
+*.before-*
+*.backup*
+*.bak
+*.cursor-backup
+*.style-backup
