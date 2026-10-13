@@ -19,3 +19,8 @@
 *.bak
 *.cursor-backup
 *.style-backup
+
+# Local installer backups
+install.sh.*
+.backup-before-installer/
+arch-hyprland-dotfiles-backups/
