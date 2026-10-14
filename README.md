@@ -44,11 +44,12 @@ Place wallpaper images in `~/Pictures/Wallpapers`.
 ## Customization
 
 Review `.config/hypr`, `.config/waybar`, `.config/quickshell`,
-`.config/rofi` and `.config/43pr` before making changes.
+`.config/rofi` and `.config/personal-theme` before making changes.
 
-## Credits
+## License
 
-This setup incorporates and adapts components from
-[43PR/dotfiles](https://github.com/43PR/dotfiles).
-Check upstream licensing and attribution requirements before redistributing
-upstream-derived files.
+Original contributions by ALEKS are licensed under the MIT License in
+`LICENSE`.
+
+Components derived from 43PR's project remain subject to the original MIT
+License and copyright notice preserved in `LICENSE-43PR`.

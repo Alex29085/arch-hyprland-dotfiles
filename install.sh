@@ -17,7 +17,7 @@ PACKAGES=(
 
 ITEMS=(
   hypr kitty quickshell rofi starship.toml waybar
-  43pr matugen
+  personal-theme matugen
 )
 
 [[ -f /etc/arch-release ]] || {
@@ -49,7 +49,7 @@ done
   exit 1
 }
 
-[[ -x "$REPO_DIR/.config/43pr/bin/theme.py" ]] || {
+[[ -x "$REPO_DIR/.config/personal-theme/bin/theme.py" ]] || {
   echo "Ошибка: theme.py не исполняемый."
   exit 1
 }

@@ -216,7 +216,7 @@ PanelWindow {
 
     FileView {
         id: store
-        path: Quickshell.env("HOME") + "/.cache/43pr/notifications.json"
+        path: Quickshell.env("HOME") + "/.cache/personal-theme/notifications.json"
         printErrors: false
         onLoaded: {
             try {

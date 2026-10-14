@@ -277,7 +277,7 @@ Scope {
 
     FileView {
         id: notifFile
-        path: Quickshell.env("HOME") + "/.cache/43pr/notifications.json"
+        path: Quickshell.env("HOME") + "/.cache/personal-theme/notifications.json"
         printErrors: false
         watchChanges: true
         onFileChanged: reload()

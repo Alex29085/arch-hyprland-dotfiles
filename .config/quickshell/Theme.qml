@@ -15,7 +15,7 @@ QtObject {
     readonly property int animMed: 220
     readonly property int animSlow: 380
 
-    property real bgAlpha: 0.7   
+    property real bgAlpha: 0.9
     property color _bgBase: palette.bg || '#000000'
     property color bg: alpha(_bgBase, bgAlpha)
     property real imageOpacity: palette.imageOpacity !== undefined ? Math.max(0, Math.min(1, Number(palette.imageOpacity))) : 0.8
@@ -39,7 +39,7 @@ QtObject {
     property var palette: ({})
 
     property FileView themeFile: FileView {
-        path: Qt.resolvedUrl(Quickshell.env("HOME") + "/.cache/43pr/quickshell-theme.json")
+        path: Qt.resolvedUrl(Quickshell.env("HOME") + "/.cache/personal-theme/quickshell-theme.json")
         watchChanges: true
         printErrors: false
         onFileChanged: reload()

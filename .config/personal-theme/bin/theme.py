@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-# .config/43pr/bin/theme.py
-"""43PR theme controller: presets + Matugen -> one semantic palette -> app files."""
+# .config/personal-theme/bin/theme.py
+"""Personal theme controller: presets + Matugen -> one semantic palette -> app files."""
 import argparse, colorsys, fcntl, json, os, re, shutil, subprocess, sys, tempfile, tomllib
 from contextlib import contextmanager
 from pathlib import Path
 
 HOME = Path.home()
 CFG = Path(os.environ.get("XDG_CONFIG_HOME", HOME / ".config"))
-CACHE = Path(os.environ.get("XDG_CACHE_HOME", HOME / ".cache")) / "43pr"
-STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", HOME / ".local/state")) / "43pr"
-ROOT = CFG / "43pr"
+CACHE = Path(os.environ.get("XDG_CACHE_HOME", HOME / ".cache")) / "personal-theme"
+STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", HOME / ".local/state")) / "personal-theme"
+ROOT = CFG / "personal-theme"
 THEMES = ROOT / "themes"
 TARGETS = ROOT / "targets.toml"
 MATUGEN_CFG = CFG / "matugen" / "config.toml"
@@ -43,7 +43,7 @@ def warn(msg):
 
 def atomic_write(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(f".{path.name}.43pr-tmp")
+    tmp = path.with_name(f".{path.name}.personal-theme-tmp")
     tmp.write_text(text)
     os.replace(tmp, path)
 
@@ -171,7 +171,7 @@ def merged(colors):
 
 
 def preset_path(name):
-    if name == "43pr-default":
+    if name == "personal-theme-default":
         name = "default"
     if not NAME.match(name):
         die(f"invalid preset name: {name!r}")
@@ -301,7 +301,7 @@ def apply_palette(pal):
                 hooks.append(t["reload"])
         for f, dst in staged:                      # 2. only then replace files
             dst.parent.mkdir(parents=True, exist_ok=True)
-            tmp = dst.with_name(f".{dst.name}.43pr-tmp")
+            tmp = dst.with_name(f".{dst.name}.personal-theme-tmp")
             shutil.copyfile(f, tmp)
             os.replace(tmp, dst)
         atomic_write(PALETTE, json.dumps(pal, indent=2))
@@ -374,7 +374,7 @@ def cmd_preset(a):
             ensure_fallback()
             die(f"theme unchanged: {e}")
         st = load_state()
-        st.update(mode="preset", preset="default" if a.name == "43pr-default" else a.name)
+        st.update(mode="preset", preset="default" if a.name == "personal-theme-default" else a.name)
         sync_appearance(st, pal, data.get("appearance"))   # light/dark GTK follows the preset
         save_state(st)
     print(f"theme: preset '{a.name}' applied")
@@ -407,15 +407,72 @@ def cmd_apply(a):
 def cmd_mode(a):
     if a.value not in ("dark", "light"):
         die("mode must be 'dark' or 'light'")
+
     st = load_state()
+
+    if st.get("mode") == "wallpaper" and st.get("wallpaper"):
+        cmd_wallpaper(argparse.Namespace(path=st["wallpaper"]))
+        st = load_state()
+        st["mode_appearance"] = a.value
+        save_state(st)
+        set_gtk_color_scheme(a.value)
+        return
+
+    if st.get("mode") == "preset":
+        with lock():
+            try:
+                name = st.get("preset", "default")
+                data = load_toml(preset_path(name))
+                pal = merged(data.get("colors", {}))
+
+                if a.value == "light":
+                    pal.update({
+                        "bg": "#f0f2f5",
+                        "bg_panel": "#e5e9ee",
+                        "bg_card": "#ffffff",
+                        "bg_track": "#d5dbe2",
+                        "bg_hover": "#c6ced8",
+                        "fg": "#1a1e23",
+                        "fg_soft": "#2b333c",
+                        "fg_dim": "#46515d",
+                        "fg_muted": "#596675",
+                        "fg_faint": "#7f8995",
+                        "fg_dark": "#a9b1bb",
+                        "border": "#c7ced6",
+                        "border_accent": "#aab4c0",
+                        "cursor_text": "#f0f2f5",
+                        "selection_bg": "#c4d4e4",
+                        "selection_fg": "#1a1e23",
+                        "term0": "#f0f2f5",
+                        "term7": "#46515d",
+                        "term15": "#1a1e23",
+                        "gtk_bg": "#f0f2f5",
+                        "gtk_fg": "#1a1e23",
+                        "qs_bg": "#f0f2f5",
+                        "qs_text": "#1a1e23",
+                        "qs_text_dim": "#46515d",
+                        "qs_border": "#c7ced6",
+                        "qs_bg_panel": "#e5e9ee",
+                        "qs_bg_card": "#ffffff",
+                        "qs_text_faint": "#7f8995",
+                        "qs_track_bg": "#d5dbe2",
+                    })
+
+                apply_palette(pal)
+            except Exception as e:
+                die(f"theme unchanged: {e}")
+
+        st = load_state()
+        st["mode_appearance"] = a.value
+        save_state(st)
+        set_gtk_color_scheme(a.value)
+        print(f"theme: preset '{name}' applied in {a.value} mode")
+        return
+
     st["mode_appearance"] = a.value
     save_state(st)
-    set_gtk_color_scheme(a.value)             # sync GTK/libadwaita/portal color-scheme
-    wp = st.get("wallpaper")
-    if st.get("mode") == "wallpaper" and wp:
-        cmd_wallpaper(argparse.Namespace(path=wp))
-    else:
-        print(f"theme: mode set to {a.value} (no wallpaper active; will apply on next 'wallpaper' or 'auto')")
+    set_gtk_color_scheme(a.value)
+    print(f"theme: mode set to {a.value}")
 
 
 def cmd_colorgen(a):

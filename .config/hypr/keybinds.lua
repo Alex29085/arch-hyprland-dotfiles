@@ -25,7 +25,7 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = 0 })) -- Fullscreen
 
 hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(home .. "/.config/hypr/scripts/opacity.sh")) -- Opacity
 
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("python3 " .. home .. "/.config/43pr/bin/theme.py toggle")) -- Light/dark toggle
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("python3 " .. home .. "/.config/personal-theme/bin/theme.py toggle")) -- Light/dark toggle
 
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle")) -- Notifications
 

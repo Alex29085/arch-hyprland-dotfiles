@@ -25,7 +25,7 @@ Item {
         Quickshell.execDetached([
             "/bin/sh",
             "-c",
-            "python3 \"$HOME/.config/43pr/bin/theme.py\" " + themeCommand
+            "python3 \"$HOME/.config/personal-theme/bin/theme.py\" " + themeCommand
         ])
 
         // Re-read state.json shortly after, so the buttons reflect the new
@@ -39,7 +39,7 @@ Item {
     FileView {
         id: stateView
         path: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state"))
-              + "/43pr/state.json"
+              + "/personal-theme/state.json"
         watchChanges: true
         onFileChanged: reload()
         onLoaded: {

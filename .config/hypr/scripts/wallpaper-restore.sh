@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Draw the wallpaper recorded by theme.py (set by the installer or the picker).
-state="${XDG_STATE_HOME:-$HOME/.local/state}/43pr/state.json"
+state="${XDG_STATE_HOME:-$HOME/.local/state}/personal-theme/state.json"
 
 img="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("wallpaper",""))' "$state" 2>/dev/null)"
 [[ -f "$img" ]] || exit 0
